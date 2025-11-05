@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Form using EmailJS</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: #0b0f19;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    form {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 25px 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 25px rgba(0, 255, 255, 0.2);
+      width: 320px;
+      backdrop-filter: blur(6px);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 15px;
+      color: #00ffff;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 6px;
+      outline: none;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+
+    textarea {
+      resize: none;
+      height: 80px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      background: linear-gradient(90deg, #00ffff, #0077ff);
+      color: #000;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      transform: scale(1.03);
+    }
+
+    .status {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <form id="contact-form">
+    <h2>Contact Us</h2>
+    <input type="text" id="name" placeholder="Your Name" required />
+    <input type="email" id="email" placeholder="Your Email" required />
+    <input type="text" id="phone" placeholder="Phone Number" required />
+    <textarea id="message" placeholder="Your Message" required></textarea>
+    <button type="submit">Send Message</button>
+    <div class="status" id="status"></div>
+  </form>
+
+  <!-- ✅ EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    (function(){
+      emailjs.init("tvDRl9PfrEa1gsmyn"); // Replace with your actual Public Key
+    })();
+
+    const form = document.getElementById("contact-form");
+    const status = document.getElementById("status");
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const templateParams = {
+        from_name: document.getElementById("name").value,
+        from_email: document.getElementById("email").value,
+        phone_number: document.getElementById("phone").value,
+        message: document.getElementById("message").value
+      };
+
+      emailjs.send("service_alqahyd", "template_smvvtgp", templateParams)
+        .then(function(response) {
+          status.style.color = "#00ff7f";
+          status.textContent = "✅ Message sent successfully!";
+          form.reset();
+        }, function(error) {
+          status.style.color = "#ff4d4d";
+          status.textContent = "❌ Failed to send message. Try again.";
+        });
+    });
+  </script>
+</body>
+</html>
